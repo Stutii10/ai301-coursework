@@ -1,86 +1,89 @@
 # Unit 1 — Issue Selection
 
-Path: `beat-1-sandbox/unit-1/selection.md`
-
-Record of the issue carried into Unit 2, and of the evaluation runs that produced
-`eval-run.txt`. This file is graded at the path above; a copy kept anywhere else in
-the repository is not read.
-
-Complete every labelled field below. Each is graded on its own; content placed under the
-wrong label is not graded.
-
----
-
 ## Selected issue
 
 **Issue link**
 
-[The individual Path Review issue page. A link to the repository or the issue list
-does not satisfy this field.]
+https://github.com/codepath/pathreview-ai301-fa26-s1/issues/60
 
 **Verdict output**
 
-[Your skill's live-mode output for this issue, pasted verbatim and ending with the
-fenced JSON verdict block. A summary does not satisfy this field.]
-
-**The verdict must record `accept` for this issue.** Choose an issue your own skill
-accepts. If your skill rejects every candidate you try, that is a signal about your
-rubric rather than about the issues: revise it and re-run — retries are unlimited and a
-partial re-run costs about $0.20 — or run the skill on different candidates. Output
-recording `reject` for the issue you chose earns no credit for this field.
-
 ```
-paste the output here, including the closing JSON block
+Mode: live. Candidate is in the scoped repo (codepath/pathreview-ai301-fa26-s1). Note: the fit profile section of scope.md is still the placeholder (Write a few sentences here.) — with a single candidate there is nothing to rank, so it didn't affect this grade, but fill it in before grading multiple issues.
+
+Issue #60 — "Faithfulness checker crashes when a context chunk has text: None"
+
+- maintainer-alive — pass: newest commit on main is 2026-09-16 (chore: track five more manifest entries against the tracker, Aburke225), 5 days ago.
+- repo-in-use — pass: repo pushed_at is 2026-09-16, within 7 days; not archived, single branch main.
+- newcomer-scope — pass: a single concrete bug with a named root cause (chunk.get("text", "") returns None when the key exists), a runnable repro, and a named failing test test_none_context_chunk_text. No sub-item checklist, no comments at all so no design debate, no core-internals statement, 0 linked PRs, no TBD markers.
+- unclaimed — pass: assignees empty, repo has 0 pull requests total (so no linked PR), timeline holds only four labeled events and zero comments.
+- ai-policy — pass: no CONTRIBUTING.md at root or .github/, no AI policy file; docs/CONTRIBUTING.md and the PR template state CI/test/xfail requirements but say nothing about AI-assisted work. Conditions, not a ban.
+- good-first-issue-label (preferred) — pass: labels are bug, good first issue, rag, tier-1.
+- maintainer-engagement (preferred) — fail: zero comments on the issue, so no Owner/Collaborator reply. The issue was opened by a Collaborator (Aburke225), but the check asks for a comment on the thread.
+
+All five required checks pass → accept. One useful thing docs/CONTRIBUTING.md flags for when you take it: this is a seeded bug, so removing its @pytest.mark.xfail(strict=True) marker is part of the fix, or CI goes red on an unexpected pass.
+
+{
+  "item": "https://github.com/codepath/pathreview-ai301-fa26-s1/issues/60",
+  "checks": [
+    {"name": "maintainer-alive", "grade": "pass",
+     "evidence": "Newest commit on default branch main is 2026-09-16T21:42:18Z by Aburke225, 5 days before today (2026-09-21)."},
+    {"name": "repo-in-use", "grade": "pass",
+     "evidence": "Repo pushed_at = 2026-09-16T21:48:27Z, within the last 7 days; archived: False."},
+    {"name": "newcomer-scope", "grade": "pass",
+     "evidence": "Body gives one concrete defect plus repro and a named failing test: \"Related failing test: test_none_context_chunk_text\"; no sub-item checklist, 0 comments, 0 linked PRs, no TBD markers."},
+    {"name": "unclaimed", "grade": "pass",
+     "evidence": "assignees: [], comments: 0, and the repo has 0 pull requests total, so no open or linked PR exists."},
+    {"name": "ai-policy", "grade": "pass",
+     "evidence": "No CONTRIBUTING.md at root or .github/ (404), no AI_POLICY.md/AI_USAGE_POLICY.md; docs/CONTRIBUTING.md and PULL_REQUEST_TEMPLATE.md require CI/tests but never mention AI-generated contributions."},
+    {"name": "good-first-issue-label", "grade": "pass",
+     "evidence": "Labels: ['bug', 'good first issue', 'rag', 'tier-1']."},
+    {"name": "maintainer-engagement", "grade": "fail",
+     "evidence": "comments: 0 — the timeline holds only four 'labeled' events, so no Owner/Collaborator comment on this issue."}
+  ],
+  "verdict": "accept"
+}
 ```
 
 ---
 
 ## Eval iterations
 
-Quote source text directly in each field below. Paraphrase does not satisfy them.
-
 **Run history**
 
-[The agreement score of each run you did, in order. A single run is a complete answer if
-only one run occurred. **The last score in your list must match the agreement line in the
-`eval-run.txt` you committed** — that file is the record of your final run.]
+1. First full run (initial rubric — four required checks with a label-based bypass on `newcomer-scope`): agreement: 16/20 scored items (bar: 18/20: below the bar; category floor unmet: no match in policy)
+2. Partial re-check on the 4 misses (`--only issue-10,issue-12,issue-15,issue-20`), after adding a required `ai-policy` check and removing the label bypass: agreement: 3/4 scored items
+3. Full run after further tightening `newcomer-scope` with a strict "must have engagement" clause: agreement: 14/20 scored items (bar: 18/20: below the bar)
+4. Final full run, after removing the engagement clause and keeping only the "unresolved product-decision markers" signal: agreement: 18/20 scored items (bar: 18/20: PASS) — this is the run saved to eval-run.txt.
 
 **Issue analysis**
 
-[One scored issue, identified by id (`issue-01` through `issue-20`; the `calib-`
-issues are not scored). State your rubric's decision, the gold label, and the
-reasoning that produced your rubric's result.]
+Issue: issue-12
+
+- Gold label: reject, with the note: "passes every liveness, scope, and claim check; the repo's contributing docs ban AI-generated code and documentation outright."
+- My rubric's verdict: reject (agrees with gold).
+- Reasoning: my first rubric had no check at all for contribution policy — it only covered the four families named in lecture (maintainer-alive, repo-in-use, scope, claimed). On my first full eval run this showed up directly as a category-floor failure: policy 0/1. Since this issue passes every liveness, scope, and claim signal cleanly, a rubric without an explicit policy check will always accept it regardless of luck — it's a structural blind spot, not a near-miss. I fixed it by adding a required ai-policy check that fails only on an explicit ban on AI-assisted contributions (not merely disclosure or review requirements), which correctly flips this issue to reject.
 
 **Check rationale**
 
-[One check from the `rubric.md` uploaded to `tools/issue-select/`, quoted as it is
-currently written, with the reasoning behind its current form.]
+Check: ai-policy, quoted as currently written in my uploaded rubric.md:
+
+"PASS unless a policy file is found AND it explicitly bans AI-generated or AI-assisted contributions outright. No policy file found = PASS. Conditions (disclosure required, human review required, testing required) are acceptable and still PASS."
+
+Reasoning: my first instinct was to treat a missing policy file as unclear and therefore fail it, matching my strict rule elsewhere that unclear counts as fail. But most repos never state an AI policy either way, so that would have auto-rejected many of my clear-accept issues too. I decided only an explicit ban should be disqualifying — absence of a stated policy is not evidence of a ban.
 
 **Trade-offs**
 
-[What the quoted check gives up. Any one of these is a complete answer: an issue whose
-result it changes, a canary you re-ran with `--only`, a case you accept it will miss, or a
-stated reason nothing changed elsewhere. "Nothing changed, and here is how I know" earns
-the point in full when the reason follows.]
+The ai-policy check's "no policy file found = PASS" rule gives up catching repos that might have an unstated or informal anti-AI norm not written into CONTRIBUTING.md — it will only ever catch bans that are explicitly documented. I accept this miss deliberately: I re-ran an early stricter version (treating missing-file as unclear/fail) and it cost me issues in the clear-accept category that had nothing to do with AI policy at all, which was a worse trade than occasionally missing an unwritten norm.
 
 ---
 
 ## Selection rationale
 
-Graded on whether all three are answered, in your own words. Not on how good the
-reasoning is, and not on length — a short honest answer to each earns the full marks.
-This is also the basis for the claim comment you write in Unit 2.
-
 **Selection rationale**
 
-[Answer all three:
+1. Yes — a bounded bug like this is the right size for me to take on right now, and it's within a few hours of work rather than a multi-day investigation.
 
-1. The issue's fit to your interests and to the time available.
-2. What the verdict identified correctly, and what you weighed that the rubric could
-   not.
-3. The anticipated difficulty in claiming it.]
+2. The rubric correctly identified the bug as bounded, unclaimed, with a named root cause and a failing test in an actively maintained repo. What I weighed myself, that the rubric has no way to check, was my own comfort with Python and whether the fix (handling a None value from chunk.get("text", "")) looked like something I could actually implement — a simple defensive check or default value — rather than something requiring deep RAG-pipeline knowledge.
 
----
-
-Related paths: `eval-run.txt` in this directory; your skill's files in
-`tools/issue-select/`.
+3. Unfamiliarity with the codebase — I haven't worked in this repo before, so I'll need to spend time understanding how the faithfulness checker and its context-chunk handling fit into the broader RAG pipeline before I can be confident the fix doesn't break something else. I also expect to need to understand the @pytest.mark.xfail(strict=True) marker removal mentioned in CONTRIBUTING.md, since that's specific to how this repo seeds and verifies bugs.
