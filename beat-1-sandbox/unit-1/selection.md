@@ -68,7 +68,7 @@ Issue: issue-12
 
 Check: ai-policy, quoted as currently written in my uploaded rubric.md:
 
-"PASS unless a policy file is found AND it explicitly bans AI-generated or AI-assisted contributions outright. No policy file found = PASS. Conditions (disclosure required, human review required, testing required) are acceptable and still PASS."
+"PASS unless a policy file is found AND it contains language prohibiting AI-generated or AI-assisted contributions — phrases such as 'do not use AI,' 'AI-generated code is not permitted,' 'prohibited,' or 'will not be accepted' applied specifically to AI/LLM-authored contributions. No policy file found = PASS. A policy that imposes conditions rather than a prohibition (e.g., 'AI use must be disclosed,' 'AI-assisted code requires additional review/testing') still PASSes — conditions are not bans."
 
 Reasoning: my first instinct was to treat a missing policy file as unclear and therefore fail it, matching my strict rule elsewhere that unclear counts as fail. But most repos never state an AI policy either way, so that would have auto-rejected many of my clear-accept issues too. I decided only an explicit ban should be disqualifying — absence of a stated policy is not evidence of a ban.
 
