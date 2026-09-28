@@ -1,30 +1,30 @@
-# eval run written by run_eval.py at 2026-09-21T04:35:46Z
+# eval run written by run_eval.py at 2026-09-28T07:14:12Z
 # model: sonnet (pinned)
 # graded: /Users/stutigoyal10/.claude/skills/issue-select
 # packages: 20 scored
-#   rubric.md  sha256:960e576512eb2e61
+#   rubric.md  sha256:86ad216ae3a70906
 #   SKILL.md  sha256:bbb295bf984701fd
 #
 grading 20 bundle(s) with rubric.md, model sonnet, 5 worker(s)...
-  issue-04: accept
-  issue-03: reject
   issue-05: reject
   issue-02: reject
+  issue-03: reject
+  issue-04: accept
+  issue-01: reject
   issue-06: accept
   issue-07: reject
-  issue-01: reject
+  issue-10: reject
   issue-08: reject
   issue-09: accept
   issue-11: accept
-  issue-10: reject
   issue-13: reject
   issue-14: accept
   issue-12: reject
   issue-16: accept
   issue-17: reject
-  issue-15: reject
-  issue-20: reject
   issue-18: reject
+  issue-20: reject
+  issue-15: reject
   issue-19: reject
 
 item      gold    verdict  agree  note
