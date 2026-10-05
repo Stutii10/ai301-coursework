@@ -14,8 +14,39 @@ Stutii10
 
 https://github.com/codepath/pathreview-ai301-fa26-s1/issues/60#issuecomment-5986911778
 
-[PASTE THE EXACT TEXT OF comment.md HERE — run `cat comment.md` and paste it verbatim]
+**Plan comment**
 
+https://github.com/codepath/pathreview-ai301-fa26-s1/issues/60#issuecomment-5986911778
+
+I reproduced this myself (environment and steps above:
+https://github.com/codepath/pathreview-ai301-fa26-s1/issues/60#issuecomment-5878503760).
+Root cause: `chunk.get("text", "")` returns `None` when the key is
+present with value `None`, so `" ".join(...)` on line 38 of
+`faithfulness_checker.py` raises before any scoring happens.
+
+Plan: change that line to `chunk.get("text") or ""`, so a `None` text
+is treated like a missing key. As `docs/CONTRIBUTING.md` asks for
+seeded bugs, I'll also delete the `xfail(strict=True)` marker on
+`test_none_context_chunk_text`; otherwise CI fails with `XPASS(strict)`
+once the fix lands. So two files: the one-line fix in
+`faithfulness_checker.py` and the marker removal in
+`test_faithfulness_checker.py`. Not touching claim extraction, other
+scorers, or the separate `RelevanceScorer` crash on the same input
+(different exception, different file, not tracked by this issue).
+Branch on my fork: `fix/60-none-chunk-text`.
+
+Test, before and after:
+- The issue's snippet: expect a float in `[0.0, 1.0]`, no exception.
+- My posted repro command (`pytest ... -k none_context_chunk_text --runxfail`): expect pass.
+- The same test without `--runxfail`, once the marker is gone: expect
+  `1 passed`, the way CI runs it.
+- The full `test_faithfulness_checker.py` file: nothing that passed before may fail.
+- The `[{}]` → `0.0` and real-string → `1.0` controls from the earlier
+  macOS repro above, which I'll run myself, should not change.
+
+I see #74 and a couple of plan comments here already propose the same
+one-line fix. I'm posting mine anyway since it's built from my own
+reproduction, and I'm happy to step back if one of those merges first.
 ---
 
 ## Your branch
