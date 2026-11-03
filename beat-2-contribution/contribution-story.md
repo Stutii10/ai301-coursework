@@ -1,6 +1,6 @@
-# Contribution: [Issue Title]
+# Contribution:  API reference doc is missing the POST /profiles request body schema #37
 
-Path: `beat-2-contribution/contribution-story.md`
+Path: (https://github.com/codepath/pathreview-ai301-fa26-s1/issues/37)
 
 This file is Assignment 5, and it is graded at the path above; a copy kept anywhere else in
 the repository is not read. **Keep every section header below under its exact name** — the
@@ -8,11 +8,10 @@ format criteria grade exactly that. Your course repo link is the whole submissio
 files and no evidence uploads are part of Assignment 5.
 
 **Contribution Number:** [1]
-**Student:** [Student name]
-**GitHub Username:** [your GitHub username, exactly as it appears on your profile - no @, no
-profile URL. Your comments upstream are identified by this name.]
-**Issue:** [GitHub issue link]
-**Pull Request:** [GitHub PR link, once opened]
+**Student:** Stuti Goyal
+**GitHub Username:** Stutii10
+**Issue:** https://github.com/codepath/pathreview-ai301-fa26-s1/issues/37
+**Pull Request:** [not opened yet]
 
 One repository, built across units 5 to 8, telling the whole story of your real
 contribution. Fill it as you work, not at the end — the sections below ask for evidence that
@@ -55,16 +54,13 @@ happened; these entries are the toolkit's own timeline.
 All four entries are graded. Keep every heading below, and fill each
 one in the week it belongs to.
 
-**Unit 5: [one line on the tool work]**
+**Unit 5: Built an issue scout and found its repo-health checks reject a busy classroom repo**
 
-[2-4 sentences: what you built (the scout, your strategy), what broke
-or fell short, what changed because of it.]
+I wrote three `gh search issues` queries and ranking rules for tier-1 bugs, then ran the scout. It rejected all five issues it graded, mostly because `maintainer-alive` and `repo-in-use` fail for every issue in a repo last pushed on 2026-09-16. I tried a `-linked:pr` filter, but it removed every tier-1 bug (all had linked PRs), so I dropped it and counted PRs per issue instead. Widening to tier-1 docs issues found #37 and #11, which have no PRs and no comments.
 
-**Unit 6: [one line on the tool work]**
+**Unit 6: Installed a voice guard and wrote a repo memory file; both caught mistakes**
 
-[2-4 sentences: the voice-guard, the repo-memory file. What broke or
-fell short, and what changed because of it. "Nothing broke" counts when
-it is true - say how you know.]
+I added three upstream rules (claims, questions, pings) to my voice guide and wired in the hook. The wiring test was blocked as intended. `repro-check` rejected my first claim draft because it copied my own guide's example wording, so I rewrote it from what I read in `profiles.py` and `review.py`. I also patched the rubric's scope check to `scope-feasible` with a difficulty note. `CLAUDE.local.md` holds the repo's branch, commit and CI rules; it is excluded from git. [Add what you'd change next time.]
 
 **Unit 7: [one line on the tool work]**
 
@@ -80,16 +76,11 @@ drafted, what you did with the draft.]
 
 ## Why I Chose This Issue
 
-[1-2 paragraphs in your own words: how you searched, what your scan
-surfaced, what your scout's verdict said, why this issue fits your
-profile, and what you hope to learn. If your scout's verdict on it
-was reject and you chose it anyway, say so here and say why; choosing
-against your own tool silently is what loses points. Close with an
-honest read of the tool itself: where the scout fell short on a real
-wild search and what you changed or would change, or what convinced
-you it held up. **Record the link to your claim comment in this section too.**
-Not claimed yet? Write `claim pending` and today's date where the link goes,
-and add the link the moment your claim lands.]
+I started with bug queries for tier-1 issues. Every tier-1 bug already had open PRs from classmates, and the one without a crowd (#26) needed Docker, which I wanted to avoid. So I widened the search to tier-1 docs issues. That surfaced #37, #11, #47 and #36, and #37 and #11 had no PRs and no comments. I picked #37 (the missing request-body schemas for POST /profiles and POST /reviews in docs/API.md) because it is Python-adjacent, short, needs no Docker, and nobody else is on it. I hope to learn how this API's inputs actually work (multipart form fields versus a JSON body) and how to write docs a maintainer will merge.
+
+My scout's verdict on #37 was reject. It failed `maintainer-alive`, `repo-in-use` and `maintainer-engagement`, and passed nothing else it checks against. I chose it anyway, and I'm saying so here. Those checks only look at commits, pushes and comments, so a frozen classroom repo fails them for every issue. They can't see that CONTRIBUTING.md states a 48-hour response expectation and that ~170 PRs are open. The scout fell short on this wild search, so I patched the rubric scope check to `scope-feasible` and recorded the repo-health tension in my scan notes. Next time I'd add a docs query to the search strategy.
+
+Claim comment: (https://github.com/codepath/pathreview-ai301-fa26-s1/issues/37#issuecomment-6595482005)
 
 **Toolkit**
 
@@ -121,10 +112,10 @@ and add the link the moment your claim lands.]
 
 **Toolkit**
 
-- Tool:
-- What it produced:
-- Difficulties:
-- What changed:
+- Tool: issue-scout (my search strategy and rubric), run as a Claude Code skill, plus manual `gh` queries for PR counts.
+- What it produced: a scan that rejected all five bug issues it graded, then re-grades of #37/#11 that rejected on activity checks only.
+- Difficulties: repo-health checks fail every issue in a frozen classroom repo; `-linked:pr` removed every tier-1 bug; the first scan ranked a tier-2 issue first.
+- What changed: patched the rubric scope check to `scope-feasible` with a difficulty note; dropped `-linked:pr`; chose #37 against the scout's verdict and wrote down why.
 
 ---
 
@@ -132,31 +123,32 @@ and add the link the moment your claim lands.]
 
 **Environment Setup**
 
-[What a stranger would need to stand this up: your operating system,
-the relevant versions (language, runtime, package manager, the project
-itself), and how you set the project up. Then the challenges you faced
-and how you solved them, or that none came up.]
+macOS 15.7.3, zsh. No Docker and no running API; this reproduction reads the docs and source only. I forked codepath/pathreview-ai301-fa26-s1, cloned it, added `upstream`, and branched `docs/37-request-body-schemas` from main at commit f89c06f. Challenges: `gh repo fork --clone` failed because my Unit 4 clone already existed, so I reused it and added the upstream remote.
 
 **Steps to Reproduce**
 
-1. [Step 1]
-2. [Step 2]
-3. [Observed result]
+1. `grep -n -e 'POST /profiles' -e 'POST /reviews' docs/API.md` shows each endpoint is one line.
+2. `grep -n -e 'Form(' -e 'File(' api/routes/profiles.py` lists the form fields.
+3. `sed -n '22,28p' api/routes/reviews.py` shows the POST /reviews handler.
+4. `sed -n '14,15p' api/schemas/review.py` shows the request schema.
+5. Compare: the code defines request fields that docs/API.md does not describe. Observed: no request-body section exists for either endpoint.
 
 **Reproduction Evidence**
 
-- **Commit showing reproduction:** [link to commit in your fork]
-- **Screenshots/logs:** [if applicable]
-- **My findings:** [what you discovered during reproduction; an
-  honest, evidenced cannot-reproduce that led you to re-pick or ask
-  the maintainer belongs here and costs you nothing]
+- **Commit showing reproduction:** none; docs-only, base commit f89c06f
+- **Screenshots/logs:**
+  - API.md:18 and :24 are one-line entries for the two endpoints.
+  - profiles.py:25-27: `github_username: str = Form(default=None)`, `portfolio_url: str = Form(default=None)`, `resume_file: UploadFile = File(default=None)`
+  - reviews.py:22-24: `@router.post("", response_model=ReviewResponse)`, `async def create_review_endpoint(`, `data: ReviewCreate,`
+  - review.py:14-15: `class ReviewCreate(BaseModel):` / `profile_id: UUID`
+- **My findings:** The gap is real. POST /profiles takes three optional multipart fields, and `portfolio_url` is not mentioned anywhere in API.md. POST /reviews takes a JSON body with one field, `profile_id`. I did not run the API, and PDF upload behavior is unverified. Parts of this reproduction were drafted with Claude's help; I ran and checked the commands myself.
 
 **Toolkit**
 
-- Tool:
-- What it produced:
-- Difficulties:
-- What changed:
+- Tool: repro-check (my skill), run on my reproduction draft.
+- What it produced: a fail on unfilled placeholders first, then an accept once I replaced them with real commands and output.
+- Difficulties: it refused to grade until the scout's #37 read-out was saved to scan-output.md, and my draft had a stray "4. 4." numbering typo.
+- What changed: appended the #37 grade to scan-output.md and fixed the typo.
 
 ---
 
