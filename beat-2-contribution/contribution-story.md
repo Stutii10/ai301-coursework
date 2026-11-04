@@ -223,7 +223,7 @@ built, decisions you made when you made them, wrong turns included.]
 
 ## Pull Request
 
-**PR Link:** [GitHub PR URL when opened]
+**PR Link:** (https://github.com/codepath/pathreview-ai301-fa26-s1/pull/252)
 
 **PR Description:** [what the PR says; much of the content above
 adapts into it]
