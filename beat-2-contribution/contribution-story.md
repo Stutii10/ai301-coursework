@@ -11,7 +11,7 @@ files and no evidence uploads are part of Assignment 5.
 **Student:** Stuti Goyal
 **GitHub Username:** Stutii10
 **Issue:** https://github.com/codepath/pathreview-ai301-fa26-s1/issues/37
-**Pull Request:** [not opened yet]
+**Pull Request:** https://github.com/codepath/pathreview-ai301-fa26-s1/pull/252
 
 One repository, built across units 5 to 8, telling the whole story of your real
 contribution. Fill it as you work, not at the end — the sections below ask for evidence that
@@ -62,11 +62,9 @@ I wrote three `gh search issues` queries and ranking rules for tier-1 bugs, then
 
 I added three upstream rules (claims, questions, pings) to my voice guide and wired in the hook. The wiring test was blocked as intended. `repro-check` rejected my first claim draft because it copied my own guide's example wording, so I rewrote it from what I read in `profiles.py` and `review.py`. I also patched the rubric's scope check to `scope-feasible` with a difficulty note. `CLAUDE.local.md` holds the repo's branch, commit and CI rules; it is excluded from git. [Add what you'd change next time.]
 
-**Unit 7: [one line on the tool work]**
+**Unit 7: Installed the ship-gate and a manifest; it rejected my first run for paperwork, not code**
 
-[2-4 sentences: the ship-gate and your gate manifest. What it produced
-on your real branch, what fought you, what changed because of it.]
-
+My manifest runs make lint, black --check and make test-unit; make typecheck is excluded with a dated reason, since mypy fails on numpy stubs in my Python 3.13 environment (CI passes it on 3.11). On my real branch, the first run passed those checks but my pr-precheck rejected the plan, evidence and description, because I had added an Authentication paragraph and curl examples without recording them as deviations and had two test-plan items with no evidence. I fixed the paperwork instead of the code, and the second run passed. My voice guard then stopped the first PR attempt over a line that belonged under Notes for Reviewers.
 **Unit 8: [one line on the tool work]**
 
 [2-4 sentences: the PR-monitor and your playbook. What it read, what it
@@ -86,12 +84,10 @@ Claim comment: (https://github.com/codepath/pathreview-ai301-fa26-s1/issues/37#i
 
 **Toolkit**
 
-- Tool: issue-scout (your scout: your search strategy, your rubric),
-  and how you used it
-- What it produced: [the scan and its verdict on this issue, described]
-- Difficulties: [where it fell short, or "none met" if none did]
-- What changed: [what you patched or would update, or "nothing"]
-
+- Tool: issue-scout (my search strategy and rubric), run as a Claude Code skill, plus manual `gh` queries for PR counts.
+- What it produced: a scan that rejected all five bug issues it graded, then re-grades of #37 and #11 that rejected on repo-activity checks only.
+- Difficulties: the repo-health checks fail every issue in a frozen classroom repo; `-linked:pr` removed every tier-1 bug; the first scan ranked a tier-2 issue first.
+- What changed: patched the rubric scope check to `scope-feasible` with a difficulty note; dropped `-linked:pr`; chose #37 against the scout's verdict and wrote down why.
 ---
 
 ## Understanding the Issue
@@ -171,53 +167,50 @@ Add a short Request section under each of the two endpoints in docs/API.md, in t
 3. Re-run my reproduction commands to confirm the doc now matches the code, and preview the markdown.
 4. Run make lint, .venv/bin/black --check . and make test-unit (the manifest checks).
 
-[Record deviations here as they happen: what changed mid-build and
-why. A recorded deviation is honest work; silent drift is not.]
+**Deviations**
 
+- Added one general paragraph under Authentication (bearer token from POST /auth/login, 401 otherwise) instead of repeating it in both Request sections. Not in the first plan.
+- Added a curl example under each Request section. Not in the first plan.
+- The doc had no existing request format to follow, so the table layout is new.
+
+  
 **Toolkit**
 
-- Tool:
-- What it produced:
-- Difficulties:
-- What changed:
+- Tool: plan-check (my skill), run on plan.md and plan-comment.md.
+- What it produced: a hold on the first run, then an accept after I revised the plan.
+- Difficulties: it first found no plan-comment.md for #37 and read the old #60 comment.md; the plan was missing the issue's request for a description and example value for each field; the test plan named no commands or expected results.
+- What changed: wrote plan-comment.md, added descriptions and examples to the plan, and rewrote the test plan with commands and expected results. Its notes on my own skill files (grade labels, a scope note that disagrees with its rules) are still to fix.
 
 ---
 
 ## Testing Strategy
 
-[What observable checks prove the fix: your reproduction steps re-run
-against the built change (before and after), and the repo's own test
-suite or checks with the outcome shown. "Tests pass" with nothing
-observable named is not a strategy.]
+Before the change, a grep of docs/API.md at base commit f89c06f for the four request fields matched only the {profile_id} path parameters of GET and DELETE. After the change, the same grep finds each field under the right endpoint. I compared every field name, type and required or optional status with the Form( and File( lines in api/routes/profiles.py and ReviewCreate in api/schemas/review.py, compared the accepted resume types and both 422 cases with profiles.py, and previewed the rendered markdown. git diff --stat shows only docs/API.md changed. make lint, black --check and make test-unit pass (375 passed, 53 xfailed). make typecheck fails locally before checking any code (numpy stubs in my Python 3.13 environment) but passes in CI on Python 3.11, where all five jobs passed.
 
 **Toolkit**
 
-- Tool:
-- What it produced:
-- Difficulties:
-- What changed:
+- Tool: grep and the repo's make targets, collected into test_evidence.md by shell commands.
+- What it produced: before and after output, the code comparisons, and lint, black and unit test results.
+- Difficulties: the "before" grep showed two profile_id matches that are path parameters, not request fields, so I added a note; mypy fails in my local environment.
+- What changed: excluded make typecheck in my manifest with a dated reason; CI later confirmed it passes.
+
 
 ---
 
-## Implementation Notes
+**2026-11-03**
 
-[A running log, added to as you work. Date each entry. What you
-built, decisions you made when you made them, wrong turns included.]
+Wrote and ran plan-check, which held my first plan, revised it, and got an accept. Added a Request section for POST /profiles and POST /reviews to docs/API.md, plus a curl example under each and one Authentication line. Committed as 0bb97b3 on docs/37-request-body-schemas. The curl examples and the Authentication line were not in my plan.
 
-**[Date]**
+**2026-11-04**
 
-[Entry]
-
-**[Date]**
-
-[Entry]
+The first ship-gate run rejected the branch: lint, black and unit tests passed, but my pr-precheck failed three checks because the Authentication paragraph and curl examples were not recorded as deviations and the markdown preview and resume-type comparison in my test plan had no evidence. I added a Deviations section to plan.md, ran the comparison, previewed the markdown, and updated pr_draft.md. The second run passed. My voice guard then blocked the first PR attempt because a plan deviation sat under Changes, so it was moved to Notes for Reviewers. Opened PR #252; all five CI jobs passed.
 
 **Toolkit**
 
-- Tool:
-- What it produced:
-- Difficulties:
-- What changed:
+- Tool: the ship-gate and my ship-manifest.md.
+- What it produced: a reject on the first run, a pass on the second.
+- Difficulties: the first reject was about paperwork, not the code; my terminal paste got cut off once while writing test_evidence.md.
+- What changed: fixed the plan, evidence and description rather than the branch.
 
 ---
 
@@ -225,26 +218,7 @@ built, decisions you made when you made them, wrong turns included.]
 
 **PR Link:** (https://github.com/codepath/pathreview-ai301-fa26-s1/pull/252)
 
-**PR Description:** [what the PR says; much of the content above
-adapts into it]
-
-**Maintainer Feedback:**
-
-- [Date]: [feedback received, or "none yet"; silence is a normal
-  state and costs you nothing]
-- [Date]: [how you addressed it]
-
-**Status:** [Awaiting review / Iterating / Merged / Closed. The
-status is a fact you record, never a grade: the PR is graded as
-opened.]
-
-**Toolkit**
-
-- Tool:
-- What it produced:
-- Difficulties:
-- What changed:
-
+- What changed: moved the plan-deviation line to Notes for Reviewers.
 ---
 
 ## Learnings and Reflections
