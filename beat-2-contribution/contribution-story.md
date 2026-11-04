@@ -242,25 +242,19 @@ The first ship-gate run rejected the branch: lint, black and unit tests passed, 
 
 **Technical Skills Gained**
 
-[What you learned technically, named concretely.]
+How FastAPI separates multipart form fields (Form, File) from a JSON body (a Pydantic model such as ReviewCreate), and how get_current_user reads a bearer token from the Authorization header. I also learned to check a doc against the code with grep and sed instead of trusting my reading of it.
 
 **Challenges Overcome**
 
-[What was hard and how you solved it; point at the real events, the
-Toolkit blocks above are full of them.]
+Every tier-1 bug already had PRs, so I moved to a docs issue. My ship-gate rejected my first run for paperwork: I had added an Authentication paragraph and curl examples without recording them as deviations, and two test-plan items had no evidence. I fixed the plan, evidence and description instead of the code. mypy failed locally on numpy stubs under Python 3.13, so I excluded it in my manifest with a dated reason; CI later passed it on 3.11.
 
 **What I'd Do Differently Next Time**
 
-[Reflection on your process.]
-
+Write the test plan with exact commands and expected results before building, and record every addition as a deviation at the moment I make it, not after the gate catches it.
 ---
 
 ## Resources Used
 
-[What actually helped, not a reading list. List things this story
-already shows you using: the doc you followed to set the environment
-up, the thread that explained the bug, the person who answered you.
-One real entry beats ten plausible ones.]
-
-- [Link to documentation that helped]
-- [Discussion, issue, or post that helped]
+- docs/CONTRIBUTING.md and .github/workflows/ci.yml in the repo, which told me what checks to put in my manifest.
+- Issue #37 and my claim comment, which fixed the scope (both endpoints, a description and example value for each field).
+- api/routes/profiles.py, api/schemas/review.py and api/middleware/auth.py, the source I checked the doc against.
