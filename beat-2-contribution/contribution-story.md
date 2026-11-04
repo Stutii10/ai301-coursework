@@ -65,6 +65,7 @@ I added three upstream rules (claims, questions, pings) to my voice guide and wi
 **Unit 7: Installed the ship-gate and a manifest; it rejected my first run for paperwork, not code**
 
 My manifest runs make lint, black --check and make test-unit; make typecheck is excluded with a dated reason, since mypy fails on numpy stubs in my Python 3.13 environment (CI passes it on 3.11). On my real branch, the first run passed those checks but my pr-precheck rejected the plan, evidence and description, because I had added an Authentication paragraph and curl examples without recording them as deviations and had two test-plan items with no evidence. I fixed the paperwork instead of the code, and the second run passed. My voice guard then stopped the first PR attempt over a line that belonged under Notes for Reviewers.
+
 **Unit 8: [one line on the tool work]**
 
 [2-4 sentences: the PR-monitor and your playbook. What it read, what it
@@ -197,6 +198,8 @@ Before the change, a grep of docs/API.md at base commit f89c06f for the four req
 
 ---
 
+## Implementation Notes
+
 **2026-11-03**
 
 Wrote and ran plan-check, which held my first plan, revised it, and got an accept. Added a Request section for POST /profiles and POST /reviews to docs/API.md, plus a curl example under each and one Authentication line. Committed as 0bb97b3 on docs/37-request-body-schemas. The curl examples and the Authentication line were not in my plan.
@@ -216,9 +219,23 @@ The first ship-gate run rejected the branch: lint, black and unit tests passed, 
 
 ## Pull Request
 
-**PR Link:** (https://github.com/codepath/pathreview-ai301-fa26-s1/pull/252)
+**PR Link:** https://github.com/codepath/pathreview-ai301-fa26-s1/pull/252
 
+**PR Description:** Adds a Request section under POST /profiles and POST /reviews in docs/API.md, with content type, authentication, and each field's type, description and example value, plus a curl example and the response fields. POST /profiles takes multipart form data, not JSON. Fixes #37. Docs only, no code changes. All five CI jobs pass.
+
+**Maintainer Feedback:**
+
+- 2026-11-04: none yet.
+
+**Status:** Awaiting review
+
+**Toolkit**
+
+- Tool: the ship-gate, run by hand and then through the Claude Code hook when opening the PR.
+- What it produced: PASS on the second run; the hook stopped the first PR attempt.
+- Difficulties: see the Implementation Notes entry for 2026-11-04.
 - What changed: moved the plan-deviation line to Notes for Reviewers.
+
 ---
 
 ## Learnings and Reflections
