@@ -98,26 +98,26 @@ Claim comment: (https://github.com/codepath/pathreview-ai301-fa26-s1/issues/37#i
 
 **Problem Description**
 
-[In your own words, what is broken or missing?]
+docs/API.md lists POST /profiles and POST /reviews in one line each and says nothing about what a request must contain. Someone has to read the source to learn the fields, the content types, or that auth is required.
 
 **Expected Behavior**
 
-[What should happen?]
+Each endpoint’s entry says how to call it: the content type, each field with its type and whether it is required, the auth requirement, and what comes back.
 
 **Current Behavior**
 
-[What actually happens?]
+[Both entries are one-line summaries. portfolio_url on POST /profiles isn’t mentioned anywhere in the doc, and neither is the profile_id body for POST /reviews.
 
 **Affected Components**
 
-[Which parts of the codebase are involved?]
+docs/API.md is the only file to change. The facts come from api/routes/profiles.py, api/routes/reviews.py and api/schemas/review.py, which are read-only here.
 
 **Toolkit**
 
-- Tool: issue-scout (my search strategy and rubric), run as a Claude Code skill, plus manual `gh` queries for PR counts.
-- What it produced: a scan that rejected all five bug issues it graded, then re-grades of #37/#11 that rejected on activity checks only.
-- Difficulties: repo-health checks fail every issue in a frozen classroom repo; `-linked:pr` removed every tier-1 bug; the first scan ranked a tier-2 issue first.
-- What changed: patched the rubric scope check to `scope-feasible` with a difficulty note; dropped `-linked:pr`; chose #37 against the scout's verdict and wrote down why.
+- Tool: reading the source by hand; Claude helped me draft this section
+- What it produced: the four answers above
+- Difficulties: none met
+- What changed: nothing
 
 ---
 
@@ -158,19 +158,18 @@ macOS 15.7.3, zsh. No Docker and no running API; this reproduction reads the doc
 
 **Analysis**
 
-[Your analysis of the root cause: what is causing the issue, traced
-to the files and functions involved.]
+The doc is thin because endpoints were summarized in one line each. The request shapes are defined in code: create_profile_endpoint in api/routes/profiles.py takes github_username and portfolio_url as optional form fields and resume_file as an optional upload (PDF, Markdown or plain text, otherwise 422), behind get_current_user. create_review_endpoint in api/routes/reviews.py takes a ReviewCreate JSON body (api/schemas/review.py) with one field, profile_id (UUID), and returns a ReviewResponse with status="pending" because the work runs in the background.
 
 **Proposed Solution**
 
-[High-level description of your fix approach, and what you are
-deliberately NOT changing.]
+Add a short Request section under each of the two endpoints in docs/API.md, in the doc’s existing style, listing content type, fields (type, required or optional), auth, and the success response. Not changing: any code, the other endpoints, the Swagger and ReDoc sections. I’m also not documenting or fixing the PDF parsing behavior, because I haven’t verified it and it is outside this issue.
 
 **Implementation Plan**
 
-1. [Modify file X to do Y]
-2. [Add or change Z]
-3. [Update tests]
+1. Re-read the three source files and write each field exactly as the code defines it.
+2. Edit docs/API.md to add the Request section for POST /profiles, then for POST /reviews.
+3. Re-run my reproduction commands to confirm the doc now matches the code, and preview the markdown.
+4. Run make lint, .venv/bin/black --check . and make test-unit (the manifest checks).
 
 [Record deviations here as they happen: what changed mid-build and
 why. A recorded deviation is honest work; silent drift is not.]
