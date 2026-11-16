@@ -18,4 +18,7 @@ My pull request (#252) has passed all automated checks and is currently awaiting
 
 Grateful to CodePath for this opportunity to expand my perspective on software engineering!
 
+Issue link: codepath/pathreview-ai301-fa26-s1#37
+PR link: codepath/pathreview-ai301-fa26-s1#252
+
 #CodePath #OpenSource #SoftwareEngineering #AI
