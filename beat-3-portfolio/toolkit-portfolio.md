@@ -59,11 +59,6 @@ Friction: The ship-gate rejected my branch for paperwork: undeclared additions a
 Change: I added a Deviations section, ran the missing comparison, previewed the markdown, and updated the PR description.
 Result: The gate passed, PR #252 opened, and all five CI jobs passed.
 
-Beat 4
-Date: [date of the monitor run]
-Friction: [what it was meant to catch]
-Change: [what changed]
-Result: [what happened afterwards, or the word none]
 
 ## Limitations and What's Next
 
