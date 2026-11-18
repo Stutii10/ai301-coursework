@@ -66,5 +66,5 @@ The toolkit grades my paperwork well and my code only as far as the project's ow
 
 Tool limits.
 issue-scout: Its repo-health checks only see commits, pushes and comments, so it rejects every issue in a quiet classroom repo and can't see that CONTRIBUTING.md sets a 48-hour response expectation.
-plan-check: Its own skill files disagreed with each other (grade labels, a scope note that contradicts its rules, a rubric written around an older issue). [say whether you fixed them]
+plan-check: Its own skill files disagreed with each other (grade labels, a scope note that contradicts its rules, a rubric written around an older issue). 
 ship-gate: It was built for code fixes, so it felt heavy on a one-file docs change, and it only knows the checks my manifest tells it about.
