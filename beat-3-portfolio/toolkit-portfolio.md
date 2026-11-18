@@ -1,7 +1,5 @@
 # Toolkit Portfolio
 
-Path: beat-3-portfolio/toolkit-portfolio.md
-
 Student: Stuti Goyal
 
 ## Featured Tools
