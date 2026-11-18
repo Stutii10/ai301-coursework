@@ -1,118 +1,75 @@
 # Toolkit Portfolio
 
-Path: `beat-3-portfolio/toolkit-portfolio.md`
-
-This file is Assignment 6, and it is graded at the path above; a copy kept anywhere else in
-the repository is not read. It has been waiting here since you created the repo in unit 1;
-unit 9 is when you write it.
-
-**Only this page is read.** Your `tools/` folders and your installed skill folders are never
-opened, so every piece of evidence you want seen has to live inline here: an output excerpt,
-a before/after pair, a dated commit reference.
-
-**Write every sentence yourself.** AI may gather diffs, dates and excerpts for you; it does
-not draft entries.
-
-**Keep every section header below under its exact name** — Featured Tools, Inventory, The
-Arc, and Limitations and What's Next. Feature three or four tools, each in the entry shape
-shown below; give every other tool one inventory line.
-
-**Some lines below are labelled, and the label is how they are read.** Three places on this
-page use a `Label: your words` shape — the arc's beats, the tool-limits list, and nothing
-else. Keep those labels exactly as written, one per line, and never delete a labelled line:
-where you have nothing to put after a label, write `none` and move on. A deleted label reads
-as a deleted answer.
-
-**Before you finish**, replace every `[bracketed prompt]` with your own words, then delete
-the unused `[Tool name]` entry stub, its copy-me sentence, and the prompt sentences under
-each header. A leftover bracketed prompt reads as unfilled.
-
-**Student:** [Student name]
+Student: Stuti Goyal
 
 ## Featured Tools
 
-Three or four tools, presented in depth. Open with a few sentences
-on why you chose these.
+I picked these three because each one caught a real problem on my own contribution, issue #37 in Path Review, and each one changed because of it. The issue-scout picked my issue, the plan-check graded my plan before I built anything, and the ship-gate checked my work before the PR opened.
 
-Full credit asks the featured set to show real change: **at least two** of your featured
-entries should show a tool that visibly moved through use. An honest entry for a tool that
-barely changed — saying so, dating what did happen, and giving the reason — earns the solid
-middle tier and never fails you.
+### issue-scout
 
-Each tool's honest limit is not written here. It goes in the tool-limits list at the
-bottom of this page, one line per featured tool, so that the limits sit together and can be
-read as a set.
+What it is, and the judgment hole I wrote: It scans a repo for issues and grades each one against a rubric. The judgment is mine: the three search queries, the tier-1 ranking rules, and the rubric checks, including what counts as a repo that is alive.
 
-[Why these tools, in your own words.]
+How it evolved, dated: On 2026-11-02 the scout rejected all five bug issues it graded. A `-linked:pr` filter removed every tier-1 bug, so I dropped it and counted PRs per issue instead. I patched the rubric's scope check to `scope-feasible`, and I widened the search to tier-1 docs issues, which found #37 and #11.
 
-Copy the entry shape below once per featured tool and fill it there.
+Evidence: The scout's verdict on #37 was reject. It failed three checks: `maintainer-alive` (last commit 2026-09-16, 47 days before the scan), `repo-in-use` (no push in the last 7 days) and `maintainer-engagement` (zero comments). It passed `newcomer-scope`, `unclaimed`, `ai-policy` and `good-first-issue-label`. I chose #37 anyway and wrote down why: every failed check measured repo activity, not the issue.
 
-**[Tool name]**
+### plan-check
 
-**What it is, and the judgment hole I wrote:** [what the tool does,
-and the part of it that is your judgment: the rubric, strategy,
-guide, manifest, or playbook you wrote.]
+What it is, and the judgment hole I wrote: It grades a fix plan and a draft comment against the issue thread before I write any code. The judgment is my rubric of five checks, such as whether the diagnosis matches the reproduction and whether the plan names runnable tests.
 
-**How it evolved, dated:** [the changes that made it yours, each
-with its date and the friction that drove it; your weekly Toolkit
-entries are the source.]
+How it evolved, dated: On 2026-11-03 its first run held my plan. It said my plan left out what the issue actually asked for, a description and an example value for each field, and that my test plan named no commands. I rewrote the plan, wrote the missing plan comment, and added a test plan with expected results. Its second run accepted.
 
-**Evidence:** [show, don't claim: an output excerpt, a before/after
-pair, or a dated commit reference, inline here. Draw it from your real
-term work where you can - a catch this tool actually made, a
-before/after from your own repo or PR - which is graded separately from
-whether an artifact is present at all. A short, telling excerpt beats a
-pasted transcript.]
+Evidence: First run: "test-verifiable: F. Step 3 names no commands and no expected result." Second run: all five checks P, verdict accept.
+
+### ship-gate
+
+What it is, and the judgment hole I wrote: A hook that runs before `gh pr create`. It runs the project's own checks, then my pr-precheck, and stops the PR if anything fails. The judgment is my manifest: which checks the project requires, and which ones I exclude with a dated reason.
+
+How it evolved, dated: On 2026-11-03 I wrote the manifest with lint, black and unit tests, and excluded `make typecheck` with a reason, since mypy fails on numpy stubs in my Python 3.13 environment while CI uses 3.11. On 2026-11-04 the first run rejected my branch, and I fixed my records, not my code. The second run passed.
+
+Evidence: First run:
+    plan-scope-fidelity [fail]: Diff adds a general Authentication paragraph ... that plan.md never names; plan.md has no ## Deviations section.
+    tests-cover-test-plan [fail]: Test plan item 'markdown renders correctly in a preview' is never mentioned in evidence or description
+Second run: `ship-gate: PASS`. PR #252 opened that day and all five CI jobs passed.
 
 ## Inventory
 
-One line each for the rest of the toolkit: what it is and where it
-stands (one bullet per tool; a compact sentence or two is fine).
-
-- [Tool name: one line.]
+- voice guard: A hook that checks my outgoing words against my voice guide; on 2026-11-04 it stopped my first PR attempt because a plan deviation sat under Changes, and the line moved to Notes for Reviewers.
+- repro-check: Grades my reproduction write-up; it rejected my first claim draft for copying my own guide's example wording, and I rewrote it from what I read in the code.
+- PR-monitor: [one line on what it is, and where it stands]
 
 ## The Arc
 
-The story of the toolkit in order: friction, change, result, dated.
-Your weekly Toolkit entries are the source; read your own record and
-tell it oldest first.
+Beat 1
+Date: 2026-11-02
+Friction: The scout rejected all five bug issues, and the repo-health checks fail every issue in a repo with no recent pushes.
+Change: I dropped the `-linked:pr` filter, patched the scope check, and searched docs issues.
+Result: I found #37, claimed it, and posted a claim comment on the thread.
 
-Write one block per beat, in the shape below, oldest first. Keep all four labels on every
-beat, each on its own line. The `Result:` line is what the beat was for: it says what
-happened *after* the change, which is not the same sentence as the change itself. If a beat
-never reached a result, write `Result: none` — an honest beat that did not land still counts
-fully as a beat.
+Beat 2
+Date: 2026-11-03
+Friction: plan-check held my plan: it missed what the issue asked for and had no runnable test plan.
+Change: I rewrote the plan, wrote the plan comment, and added a test plan with expected results.
+Result: plan-check accepted, and I built and committed the docs change.
 
-Full credit asks for **at least two** beats whose `Result:` line names something that
-actually happened afterwards. A beat about something that did not work counts fully as a
-beat, and when the work happened never moves this score.
+Beat 3
+Date: 2026-11-04
+Friction: The ship-gate rejected my branch for paperwork: undeclared additions and two test-plan items with no evidence.
+Change: I added a Deviations section, ran the missing comparison, previewed the markdown, and updated the PR description.
+Result: The gate passed, PR #252 opened, and all five CI jobs passed.
 
-**Beat 1**
-Date: [a date, or a month and year]
-Friction: [what was going wrong, and how you noticed]
-Change: [what you changed because of it]
+Beat 4
+Date: [date of the monitor run]
+Friction: [what it was meant to catch]
+Change: [what changed]
 Result: [what happened afterwards, or the word none]
-
-**Beat 2**
-Date: [a date, or a month and year]
-Friction: [what was going wrong, and how you noticed]
-Change: [what you changed because of it]
-Result: [what happened afterwards, or the word none]
-
-Copy the beat shape above for as many beats as your term had.
 
 ## Limitations and What's Next
 
-What the toolkit as a whole still does not do, and what you would
-build or change next. Write this section last; it will be better
-after the rest.
+The toolkit grades my paperwork well and my code only as far as the project's own checks go. It never saw a maintainer's reaction, so I can't say whether any of it makes a PR easier to merge. [PR #252 status today, with a date.] Next I would make the gate flag undeclared additions earlier, so I record a deviation when I make it, not after a reject.
 
-[The honest limits, and what comes next, in your own sentences.]
-
-**Tool limits.** One line per featured tool, in the same order as the entries above, naming
-where that tool still stops or what it still gets wrong. A small honest limit is full credit;
-"none really" is not a limit. If a tool genuinely has none you can name, write `none` after
-its label rather than deleting the line.
-
-issue-scout: [where this tool still stops, in plain words, or the word none]
-[tool name]: [where this tool still stops, in plain words, or the word none]
+Tool limits.
+issue-scout: Its repo-health checks only see commits, pushes and comments, so it rejects every issue in a quiet classroom repo and can't see that CONTRIBUTING.md sets a 48-hour response expectation.
+plan-check: Its own skill files disagreed with each other (grade labels, a scope note that contradicts its rules, a rubric written around an older issue). [say whether you fixed them]
+ship-gate: It was built for code fixes, so it felt heavy on a one-file docs change, and it only knows the checks my manifest tells it about.
